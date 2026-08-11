@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>小顔ケア 種目18種 チェック</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{ --gold:#B4936A; --gold-deep:#9A794F; --ink:#33302B; --soft:#6B645B; --line:#E7DED2; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:"Zen Kaku Gothic New",sans-serif; background:#FAF6F1; color:var(--ink); padding:24px 16px 60px; }
+  h1{ font-family:"Shippori Mincho",serif; text-align:center; font-size:1.4rem; margin-bottom:6px; }
+  .sub{ text-align:center; color:var(--soft); font-size:.82rem; margin-bottom:8px; }
+  .legend{ text-align:center; font-size:.72rem; color:var(--gold-deep); margin-bottom:24px; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; max-width:1100px; margin:0 auto; }
+  .card{ background:#fff; border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow:0 10px 30px -22px rgba(80,60,40,.4); }
+  .card img{ width:100%; aspect-ratio:16/9; object-fit:cover; background:#F3ECE3; display:block; }
+  .card .noimg{ width:100%; aspect-ratio:16/9; background:#F3ECE3; display:flex; align-items:center; justify-content:center; font-size:2rem; color:#C9BBA6; }
+  .body{ padding:14px 16px 16px; }
+  .cat{ display:inline-block; font-size:10px; letter-spacing:.06em; color:var(--gold-deep); background:#F3ECE3; padding:2px 9px; border-radius:20px; }
+  .slot{ display:inline-block; font-size:10px; color:#fff; border-radius:20px; padding:2px 8px; margin-left:4px; }
+  .slot.朝{ background:#7FB0C4; } .slot.夜{ background:#7C6FA6; }
+  h3{ font-family:"Shippori Mincho",serif; font-size:1.05rem; margin:8px 0 6px; }
+  .purpose{ font-size:.78rem; color:var(--soft); line-height:1.6; margin-bottom:8px; }
+  .evi{ font-size:.72rem; color:var(--gold-deep); }
+  .evi b{ background:var(--gold); color:#fff; border-radius:4px; padding:0 5px; margin:0 2px; }
+  .caution{ font-size:.72rem; color:#A8664F; background:#FBF1EA; border-radius:8px; padding:5px 9px; margin-top:6px; line-height:1.5; }
+</style>
+</head>
+<body>
+<h1>小顔ケア 種目18種（エビデンス版）</h1>
+<p class="sub">表情筋トレ主軸 ＋ むくみ即効 ＋ 姿勢/二重あご ＋ エラは"ほぐす"</p>
+<p class="legend">🔬エビデンス A=機序妥当 / B=限定的研究あり / C=経験則　｜　⚠️＝禁忌・注意</p>
+<div class="grid" id="grid"></div>
+
+<script type="module">
+import { DB_KOGAO, KOGAO_CATEGORY } from './db-kogao.js';
+const grid = DB_KOGAO.map(e => {
+  const cat = KOGAO_CATEGORY[e.category] || { name:e.category, icon:'' };
+  return `
+  <div class="card">
+    <img src="illust/${e.illust}" alt="" onerror="this.outerHTML='<div class=noimg>${cat.icon||'✨'}</div>'">
+    <div class="body">
+      <span class="cat">${cat.icon||''} ${cat.name}</span><span class="slot ${e.slot}">${e.slot}</span>
+      <h3>${e.name}</h3>
+      <p class="purpose">${e.purpose}</p>
+      <p class="evi">🔬 エビデンス <b>${e.evidence.lv}</b> ${e.evidence.src||''}</p>
+      ${e.caution ? `<p class="caution">⚠️ ${e.caution}</p>` : ''}
+    </div>
+  </div>`;
+}).join('');
+document.getElementById('grid').innerHTML = grid;
+document.querySelector('.sub').innerHTML += ` ・ 全${DB_KOGAO.length}種`;
+</script>
+</body>
+</html>

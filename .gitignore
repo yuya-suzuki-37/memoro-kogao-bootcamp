@@ -1,0 +1,17 @@
+# 内部作業用（公開不要・ローカルのみ）
+_calib/
+_channel/
+_knowledge/
+_reference/
+qa/
+
+# システム
+node_modules/
+.DS_Store
+*.log
+Thumbs.db
+
+# イラストの生成中間物（本番は illust/ex-*.png のみ使用）
+illust/images/
+illust/prompts/
+illust/references/

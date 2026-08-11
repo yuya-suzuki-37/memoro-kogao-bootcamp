@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>30日間 小顔ケア ブートキャンプ｜Memoro</title>
+<meta name="description" content="9つの質問（と任意で顔写真）から、あなたに合った朝夜の小顔ケアを30日分に。むくみ・エラの張り・姿勢・二重あご・左右差を、写真映えする印象へ整えるフォトウェディングMemoroのケアプログラム。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="program.css">
+</head>
+<body>
+
+<!-- 受講者認証ゲート（api:'demo'はローカル確認用。本番はWorkerのURLに差し替え） -->
+<script>window.MEMORO_AUTH={ api:'https://memoro-auth.yuya-suzuki-37.workers.dev', product:'kogao', title:'30日間 小顔ケア ブートキャンプ' }</script>
+<script src="gate.js"></script>
+
+<div class="bc-banner">
+  <span class="bc-eyebrow">MEMORO 30-DAY CARE</span>
+  <div class="bc-title"><span class="bc-ico">✨</span>30日間<b>小顔</b>ブートキャンプ</div>
+</div>
+
+<header class="topbar">
+  <div class="brand">Memoro<small>KOGAO CARE</small></div>
+</header>
+
+<!-- ============ INTRO ============ -->
+<section class="hero wrap" id="intro">
+  <p class="eyebrow">FOR YOUR BIG DAY</p>
+  <h1>式まで30日。<br><span class="accent">あなたの小顔ケア</span>を、<br>毎日ひとつ。</h1>
+  <p class="lead">9つの質問にこたえると、いまのあなたに必要な「朝と夜のケア」を30日分に組みます。1日およそ3〜5分・道具なし。むくみ・エラの張り・姿勢・二重あご・左右差を、写真映えする印象へ。</p>
+  <div class="hero-ornament" aria-hidden="true"><span class="line"></span><span class="mark">✦</span><span class="line"></span></div>
+
+  <div class="howto">
+    <div class="step"><div class="n">1</div><p>9つの質問にこたえる（約1分）</p></div>
+    <div class="step"><div class="n">2</div><p>あなたの“重点ケア”がわかる</p></div>
+    <div class="step"><div class="n">3</div><p>30日プログラムが完成・毎日ケア</p></div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn" id="btn-start">診断をはじめる</button>
+    <button class="btn-ghost" id="btn-continue" hidden>前回の続きから</button>
+  </div>
+  <p class="hero-note">完全無料 ・ 回答と進捗はこの端末内だけに保存されます</p>
+</section>
+
+<!-- ============ FACE（app描画・任意の顔写真ステップ） ============ -->
+<main class="section wrap" id="face" hidden></main>
+
+<!-- ============ QUIZ（app描画） ============ -->
+<main class="section wrap" id="quiz" hidden></main>
+
+<!-- ============ RESULT（app描画） ============ -->
+<main class="section wrap" id="result" hidden></main>
+
+<footer class="foot">
+  <div class="brand">Memoro</div>
+  <p>Photo Wedding ・ 小顔ケア 30日プログラム</p>
+  <p style="margin-top:8px;opacity:.8">※ セルフチェックとケアのご提案です（医学的診断ではありません）</p>
+</footer>
+
+<script type="module" src="app-kogao.js"></script>
+</body>
+</html>

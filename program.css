@@ -1,0 +1,144 @@
+/* =================================================================
+   30日プログラム UI（小顔）— posture-30day/program.css を土台に
+   「朝夜スロット・4週タブ・進捗・式映えゴール」を追加。
+   ================================================================= */
+
+/* ブートキャンプ識別バナー */
+.bc-banner{ text-align:center; background:linear-gradient(180deg,#FBF3E6,#FFFDFA); border-bottom:1px solid #E7DED2; padding:13px 20px 15px; }
+.bc-banner .bc-eyebrow{ display:block; font-family:"Zen Kaku Gothic New",sans-serif; font-size:10px; letter-spacing:.34em; font-weight:700; color:#9A794F; margin-bottom:6px; }
+.bc-banner .bc-title{ font-family:"Shippori Mincho",serif; font-weight:700; font-size:clamp(1.05rem,3.6vw,1.25rem); letter-spacing:.1em; color:#33302B; }
+.bc-banner .bc-title .bc-ico{ margin-right:.4em; font-weight:400; }
+.bc-banner .bc-title b{ color:#B4936A; font-weight:700; }
+
+/* 式映えゴール */
+.p30-goals{ background:linear-gradient(135deg,#FFFDFA,#F5EEE3); border:1px solid #E7DED2; border-radius:18px; padding:22px 24px; margin:8px 0; }
+.p30-goals-kicker{ font-family:"Zen Kaku Gothic New",sans-serif; font-size:11px; letter-spacing:.18em; color:#9A794F; font-weight:700; }
+.p30-goals-list{ list-style:none; margin:14px 0 0; display:grid; gap:10px; padding:0; }
+.p30-goals-list li{ display:flex; gap:12px; align-items:flex-start; }
+.p30-goal-tag{ flex:none; font-size:11px; color:#fff; background:#B4936A; border-radius:20px; padding:3px 12px; margin-top:2px; }
+.p30-goal-text{ font-size:13px; color:#5A544C; line-height:1.6; }
+.p30-goals-note{ font-size:11.5px; color:#A79A88; margin-top:12px; line-height:1.7; }
+
+/* 進捗バー */
+.p30-progress{ background:#fff; border:1px solid #E7DED2; border-radius:16px; padding:18px 22px; margin:20px 0; }
+.p30-progress-top{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px; }
+.p30-progress-label{ font-size:13px; color:#6B645B; }
+.p30-progress-label b{ color:#B4936A; }
+.p30-progress-count{ font-size:13px; color:#6B645B; }
+.p30-progress-count b{ font-family:"Shippori Mincho",serif; font-size:20px; color:#9A794F; }
+.p30-progress-bar{ height:8px; background:#F3ECE3; border-radius:100px; overflow:hidden; }
+.p30-progress-bar i{ display:block; height:100%; border-radius:100px; background:linear-gradient(90deg,#C6A878,#9A794F); transition:width .4s; }
+.p30-progress-done{ font-size:12.5px; color:#9A794F; margin-top:10px; text-align:center; }
+
+/* Week タブ（4つ） */
+.p30-phases{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:24px 0 14px; }
+@media(max-width:520px){ .p30-phases{ grid-template-columns:repeat(2,1fr); } }
+.p30-phase-tab{ display:flex; flex-direction:column; gap:3px; align-items:flex-start; text-align:left; background:#fff; border:1px solid #E7DED2; border-radius:14px; padding:12px 13px; cursor:pointer; transition:.2s; }
+.p30-phase-tab:hover{ border-color:#CDB18A; }
+.p30-phase-tab.active{ background:#33302B; border-color:#33302B; }
+.p30-phase-tab.active .pt-en{ color:#D8B98A; }
+.p30-phase-tab.active .pt-ja,.p30-phase-tab.active .pt-days{ color:#F3ECE3; }
+.pt-en{ font-family:"Zen Kaku Gothic New",sans-serif; font-size:9.5px; letter-spacing:.16em; color:#B4936A; font-weight:700; }
+.pt-ja{ font-family:"Shippori Mincho",serif; font-size:14px; color:#33302B; font-weight:600; }
+.pt-days{ font-size:10.5px; color:#9A897A; }
+.p30-phase-desc{ font-size:13px; color:#6B645B; margin:0 2px 16px; line-height:1.7; }
+
+/* Day カレンダー */
+.p30-days{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+@media(min-width:600px){ .p30-days{ grid-template-columns:repeat(4,1fr); } }
+.p30-day{ position:relative; display:flex; flex-direction:column; gap:3px; text-align:left; background:#fff; border:1px solid #EAE1D4; border-radius:14px; padding:13px 13px 15px; cursor:pointer; transition:.18s; }
+.p30-day:hover{ border-color:#B4936A; transform:translateY(-1px); box-shadow:0 6px 18px rgba(180,147,106,.14); }
+.p30-day.is-done{ background:#F4F8F2; border-color:#9EBBA0; }
+.p30-day-check{ position:absolute; top:8px; right:8px; width:20px; height:20px; border-radius:50%; background:#8AA98C; color:#fff; font-size:12px; display:flex; align-items:center; justify-content:center; }
+.p30-day-badge{ font-family:"Zen Kaku Gothic New",sans-serif; font-size:9.5px; letter-spacing:.14em; color:#B4936A; font-weight:700; }
+.p30-day-num{ font-family:"Shippori Mincho",serif; font-size:24px; line-height:1; color:#33302B; font-weight:600; }
+.p30-day-theme{ font-size:11px; color:#7A756C; margin-top:2px; }
+.p30-day-items{ font-size:10.5px; color:#9A897A; line-height:1.5; margin-top:2px; }
+.p30-day-time{ font-size:10px; color:#9A794F; margin-top:3px; }
+
+/* Day 詳細 */
+.p30-detail{ margin-top:18px; background:#fff; border:1px solid #E7DED2; border-radius:18px; padding:20px; }
+.p30-detail-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:8px; }
+.p30-detail-kicker{ font-family:"Zen Kaku Gothic New",sans-serif; font-size:10.5px; letter-spacing:.16em; color:#B4936A; font-weight:700; }
+.p30-detail-head h3{ font-family:"Shippori Mincho",serif; font-size:21px; color:#33302B; margin:4px 0 0; font-weight:600; }
+.p30-detail-close{ background:#F3ECE3; border:none; width:32px; height:32px; border-radius:50%; font-size:18px; color:#6B645B; cursor:pointer; flex:none; line-height:1; }
+
+/* 朝夜スロット見出し */
+.p30-slot{ margin:16px 0 10px; }
+.p30-slot-label{ font-family:"Zen Kaku Gothic New",sans-serif; font-size:12.5px; font-weight:700; letter-spacing:.05em; padding:5px 13px; border-radius:20px; display:inline-block; }
+.p30-slot-label.morning{ color:#3E6E82; background:#E6F1F5; }
+.p30-slot-label.night{ color:#4A3F73; background:#ECE8F5; }
+
+/* 種目カード */
+.p30-ex-list{ display:grid; gap:12px; }
+.p30-ex{ display:flex; gap:14px; border:1px solid #EDE5D8; border-radius:14px; padding:14px; background:#FFFDFA; }
+.p30-ex.morning{ border-left:3px solid #7FB0C4; }
+.p30-ex.night{ border-left:3px solid #7C6FA6; }
+.p30-ex-illust{ flex:none; width:84px; height:84px; }
+.p30-ex-illust img{ width:100%; height:100%; object-fit:cover; border-radius:12px; }
+.p30-ex-emoji{ display:flex; align-items:center; justify-content:center; width:100%; height:100%; font-size:38px; background:#F3ECE3; border-radius:12px; }
+.p30-ex-body{ flex:1; min-width:0; }
+.p30-ex-cat{ display:inline-block; font-family:"Zen Kaku Gothic New",sans-serif; font-size:10px; letter-spacing:.08em; color:#9A794F; background:#F3ECE3; padding:2px 9px; border-radius:20px; }
+.p30-ex-body h4{ font-family:"Shippori Mincho",serif; font-size:16px; color:#33302B; margin:7px 0 5px; font-weight:600; }
+.p30-ex-meta{ display:flex; gap:14px; font-size:11.5px; color:#9A897A; margin-bottom:6px; }
+.p30-ex-purpose{ font-size:12.5px; color:#5A544C; line-height:1.65; margin:0 0 8px; }
+.p30-ex-how{ font-size:12px; color:#5A544C; line-height:1.7; margin:0 0 8px; padding-left:18px; }
+.p30-ex-how li{ margin-bottom:2px; }
+.p30-ex-cues{ display:flex; flex-direction:column; gap:3px; font-size:11.5px; }
+.p30-ex-cues .do{ color:#6E8A70; }
+.p30-ex-cues .dont{ color:#B5766A; }
+.p30-ex-evi{ font-size:11px; color:#8A8175; margin:7px 0 0; letter-spacing:.02em; }
+.p30-ex-evi b{ color:#9A794F; }
+.p30-ex-caution{ font-size:11px; color:#A8664F; margin:5px 0 0; background:#FBF1EA; border-radius:8px; padding:5px 9px; line-height:1.55; }
+
+/* 完了ボタン */
+.p30-done-btn{ width:100%; margin-top:18px; padding:14px; border:none; border-radius:100px; background:#B4936A; color:#fff; font-family:"Zen Kaku Gothic New",sans-serif; font-size:15px; font-weight:500; letter-spacing:.05em; cursor:pointer; transition:.2s; }
+.p30-done-btn:hover{ background:#9A794F; }
+.p30-done-btn.done{ background:#8AA98C; }
+
+/* 式当日カウントダウン（継続エンジン） */
+.p30-countdown{ margin:18px 0; }
+.cd-box{ background:linear-gradient(135deg,#B4936A,#9A794F); color:#fff; border-radius:18px; padding:20px 24px; text-align:center; box-shadow:0 14px 32px -18px #9A794F; }
+.cd-label{ font-size:12px; letter-spacing:.08em; opacity:.92; }
+.cd-big{ font-family:"Shippori Mincho",serif; font-size:1.6rem; margin:6px 0 10px; }
+.cd-big b{ font-size:2.6rem; }
+.cd-edit{ background:rgba(255,255,255,.2); border:none; color:#fff; border-radius:100px; padding:5px 16px; font-size:12px; cursor:pointer; }
+.cd-box.cd-set{ background:linear-gradient(135deg,#FBF3E6,#F5EEE3); color:#33302B; box-shadow:none; border:1px solid #E7DED2; }
+.cd-input-row{ display:flex; gap:8px; justify-content:center; margin-top:12px; flex-wrap:wrap; }
+.cd-input-row input{ padding:9px 12px; border:1px solid #E7DED2; border-radius:10px; font-family:inherit; font-size:14px; }
+.cd-save{ background:#B4936A; color:#fff; border:none; border-radius:10px; padding:9px 20px; cursor:pointer; font-family:inherit; }
+
+/* 📸 Before / After */
+.p30-beforeafter{ margin:16px 0; }
+.p30-ba-box{ background:#fff; border:1px solid #E7DED2; border-radius:16px; padding:18px; }
+.p30-ba-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px; flex-wrap:wrap; gap:4px; }
+.p30-ba-head span:first-child{ font-family:"Shippori Mincho",serif; font-size:15px; color:#33302B; }
+.p30-ba-note{ font-size:11px; color:#9A897A; }
+.p30-ba-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.ba-slot{ text-align:center; }
+.ba-slot img{ width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:12px; background:#F3ECE3; }
+.ba-add{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; aspect-ratio:3/4; border:1.5px dashed #D8C9B4; border-radius:12px; cursor:pointer; color:#9A794F; font-size:12px; background:#FFFDFA; }
+.ba-plus{ font-size:1.7rem; line-height:1; }
+.ba-cap{ display:block; font-size:11px; color:#6B645B; margin-top:6px; }
+.ba-redo{ display:block; margin:6px auto 0; background:#F3ECE3; border:none; border-radius:100px; padding:3px 12px; font-size:11px; color:#6B645B; cursor:pointer; }
+.p30-ba-done{ text-align:center; font-size:12px; color:#9A794F; margin-top:12px; }
+
+/* ✅ 生活習慣チェック枠 */
+.p30-habits{ margin:16px 0; }
+.p30-habits-box{ background:#fff; border:1px solid #E7DED2; border-radius:16px; padding:18px; }
+.p30-habits-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px; }
+.p30-habits-head span:first-child{ font-family:"Shippori Mincho",serif; font-size:15px; color:#33302B; }
+.p30-habits-count{ font-size:12px; color:#9A794F; }
+.p30-habits-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.habit-btn{ background:#FFFDFA; border:1.5px solid #E7DED2; border-radius:12px; padding:12px 10px; font-family:inherit; font-size:13px; color:#5A544C; cursor:pointer; transition:.16s; }
+.habit-btn:hover{ border-color:#CDB18A; }
+.habit-btn.on{ background:#F4F8F2; border-color:#8AA98C; color:#3E6E4A; }
+.p30-habits-note{ font-size:11px; color:#9A897A; margin-top:10px; line-height:1.6; }
+
+/* むくみ即効tip（朝ケア） */
+.p30-slot-tip{ display:block; font-size:11.5px; color:#3E6E82; background:#E6F1F5; border-radius:8px; padding:5px 11px; margin-top:7px; line-height:1.5; }
+
+@media(max-width:480px){
+  .p30-ex{ flex-direction:column; }
+  .p30-ex-illust{ width:64px; height:64px; }
+}

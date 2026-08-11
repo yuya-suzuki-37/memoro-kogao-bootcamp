@@ -1,0 +1,119 @@
+/* =================================================================
+   Memoro — 小顔ケア 30日（アイボリー×シャンパンゴールド×明朝）
+   posture-30day/styles.css を土台に、問診・結果・生活プランを追加。
+   ================================================================= */
+:root{
+  --bg:#FAF6F1; --bg-soft:#F3ECE3; --card:#FFFFFF;
+  --ink:#33302B; --ink-soft:#6B645B; --line:#E7DED2;
+  --gold:#B4936A; --gold-deep:#9A794F; --blush:#E7CFC6;
+  --good:#8AA98C; --warn:#D8A96A; --bad:#C58274;
+  --morning:#7FB0C4; --night:#7C6FA6;
+  --shadow:0 18px 50px -28px rgba(80,60,40,.35); --radius:18px;
+  --serif:"Shippori Mincho","Times New Roman",serif;
+  --sans:"Zen Kaku Gothic New",-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
+}
+*{ box-sizing:border-box; margin:0; padding:0; }
+html{ scroll-behavior:smooth; }
+body{ font-family:var(--sans); color:var(--ink); background:var(--bg); line-height:1.85; -webkit-font-smoothing:antialiased; letter-spacing:.02em; }
+img{ max-width:100%; display:block; }
+button{ font-family:inherit; cursor:pointer; }
+.wrap{ width:min(920px,92vw); margin-inline:auto; }
+[hidden]{ display:none !important; }
+
+/* ---------- top bar ---------- */
+.topbar{ display:flex; align-items:center; justify-content:center; padding:20px 0; }
+.brand{ font-family:var(--serif); font-size:1.45rem; letter-spacing:.28em; color:var(--ink); text-indent:.28em; text-align:center; }
+.brand small{ display:block; font-family:var(--sans); font-size:.56rem; letter-spacing:.42em; color:var(--gold-deep); margin-top:.3em; text-indent:.42em; }
+
+/* ---------- hero ---------- */
+.hero{ padding:26px 0 28px; text-align:center; }
+.hero .eyebrow{ font-size:.72rem; letter-spacing:.4em; color:var(--gold-deep); text-indent:.4em; margin-bottom:1.4em; }
+.hero h1{ font-family:var(--serif); font-weight:600; font-size:clamp(1.7rem,5.4vw,2.6rem); line-height:1.5; color:var(--ink); }
+.hero h1 .accent{ color:var(--gold); }
+.hero .lead{ margin:1.6em auto 0; max-width:32em; color:var(--ink-soft); font-size:clamp(.92rem,2.6vw,1.0rem); }
+.hero-ornament{ display:flex; align-items:center; justify-content:center; gap:16px; margin:26px auto 0; width:min(320px,70vw); }
+.hero-ornament .line{ flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+.hero-ornament .mark{ color:var(--gold); font-size:.8rem; }
+.hero-note{ margin-top:20px; font-size:.72rem; letter-spacing:.1em; color:var(--gold-deep); }
+
+/* ---------- how-to ---------- */
+.howto{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-top:30px; }
+.howto .step{ flex:1 1 200px; max-width:250px; text-align:center; }
+.howto .step .n{ width:36px; height:36px; border-radius:50%; border:1.5px solid var(--gold); color:var(--gold-deep); font-family:var(--serif); display:flex; align-items:center; justify-content:center; margin:0 auto 10px; }
+.howto .step p{ font-size:.8rem; color:var(--ink-soft); }
+
+/* ---------- section / buttons ---------- */
+.section{ padding:30px 0; }
+.section-head{ text-align:center; margin-bottom:26px; }
+.section-head .num{ font-family:var(--serif); font-size:.8rem; letter-spacing:.3em; color:var(--gold); display:block; margin-bottom:.8em; }
+.section-head h2{ font-family:var(--serif); font-weight:600; font-size:clamp(1.35rem,4.4vw,1.9rem); }
+.section-head p{ color:var(--ink-soft); margin-top:.7em; font-size:.9rem; }
+.btn{ display:inline-flex; align-items:center; justify-content:center; gap:.5em; font-family:var(--sans); font-size:1rem; letter-spacing:.08em; padding:.98em 2.6em; border-radius:100px; border:none; background:var(--gold); color:#fff; box-shadow:0 12px 26px -14px var(--gold-deep); transition:transform .15s,background .2s; }
+.btn:hover{ background:var(--gold-deep); transform:translateY(-1px); }
+.btn:disabled{ background:#D8CDBE; box-shadow:none; cursor:not-allowed; transform:none; }
+.btn-ghost{ background:transparent; color:var(--gold-deep); border:1.5px solid var(--gold); border-radius:100px; padding:.9em 2em; font-size:.94rem; }
+.btn-ghost:hover{ background:#FBF4EA; }
+.btn-row{ text-align:center; margin-top:28px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+
+/* ---------- reveal ---------- */
+.reveal{ animation:rise .7s cubic-bezier(.2,.7,.3,1) both; }
+@keyframes rise{ from{ opacity:0; transform:translateY(20px);} to{ opacity:1; transform:none; } }
+
+/* ---------- QUIZ ---------- */
+.quiz-card{ background:var(--card); border:1px solid var(--line); border-radius:calc(var(--radius) + 4px); padding:30px 26px 34px; box-shadow:var(--shadow); max-width:620px; margin:10px auto 0; }
+.quiz-progress{ margin-bottom:22px; }
+.quiz-progress-top{ display:flex; justify-content:space-between; align-items:center; font-size:.74rem; letter-spacing:.14em; color:var(--gold-deep); margin-bottom:8px; }
+.quiz-back{ background:none; border:none; color:var(--ink-soft); font-size:.76rem; }
+.quiz-back:hover{ color:var(--gold-deep); }
+.quiz-progress-bar{ height:5px; background:var(--bg-soft); border-radius:100px; overflow:hidden; }
+.quiz-progress-bar i{ display:block; height:100%; border-radius:100px; background:var(--gold); transition:width .3s; }
+.quiz-q{ font-family:var(--serif); font-weight:600; font-size:clamp(1.25rem,4vw,1.55rem); line-height:1.5; text-align:center; }
+.quiz-help{ text-align:center; color:var(--ink-soft); font-size:.82rem; margin-top:.8em; }
+.quiz-options{ display:grid; gap:12px; margin-top:26px; }
+.quiz-opt{ display:flex; flex-direction:column; gap:3px; text-align:left; background:#FFFDFA; border:1.5px solid var(--line); border-radius:14px; padding:16px 20px; transition:.16s; }
+.quiz-opt:hover{ border-color:var(--gold); background:#FFFBF5; transform:translateY(-1px); }
+.quiz-opt.sel{ border-color:var(--gold); background:#FBF3E6; box-shadow:0 8px 20px -14px var(--gold-deep); }
+.quiz-opt-label{ font-size:1rem; color:var(--ink); font-weight:500; }
+.quiz-opt-note{ font-size:.74rem; color:var(--ink-soft); }
+
+/* ---------- RESULT hero ---------- */
+.result-hero{ background:linear-gradient(180deg,#FFFDFA,var(--bg-soft)); border:1px solid var(--line); border-radius:calc(var(--radius) + 6px); padding:38px 26px; text-align:center; box-shadow:var(--shadow); }
+.result-hero .announce{ font-size:.74rem; letter-spacing:.34em; color:var(--gold-deep); text-indent:.34em; }
+.result-hero .type-name{ font-family:var(--serif); font-weight:600; font-size:clamp(1.5rem,5.4vw,2.1rem); margin:.5em 0 .1em; color:var(--ink); }
+.result-hero .type-desc{ color:var(--ink-soft); max-width:28em; margin:1em auto 0; font-size:.92rem; }
+.dx-chips{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:1.4em; }
+.dx-chip{ font-family:var(--serif); font-size:1rem; letter-spacing:.06em; color:#fff; background:var(--gold); border-radius:100px; padding:.5em 1.4em; box-shadow:0 8px 18px -12px var(--gold-deep); }
+
+/* ---------- life plan ---------- */
+.life-list{ display:grid; gap:12px; }
+.life-item{ display:flex; gap:16px; align-items:flex-start; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 20px; }
+.life-ico{ font-size:1.6rem; line-height:1.2; flex:none; }
+.life-item h4{ font-family:var(--serif); font-size:1.05rem; color:var(--ink); margin-bottom:.3em; }
+.life-item p{ font-size:.86rem; color:var(--ink-soft); line-height:1.7; }
+
+/* ---------- disclaimer / foot ---------- */
+.disclaimer{ margin-top:24px; font-size:.72rem; color:var(--ink-soft); background:var(--bg-soft); border-radius:14px; padding:16px 20px; line-height:1.9; }
+.foot{ text-align:center; padding:40px 0 60px; color:var(--ink-soft); font-size:.72rem; letter-spacing:.1em; }
+.foot .brand{ font-size:1rem; letter-spacing:.28em; margin-bottom:.5em; }
+
+/* ---------- 顔写真ステップ ---------- */
+.drop{ position:relative; background:var(--card); border:1.5px dashed var(--line); border-radius:var(--radius); padding:30px 22px; text-align:center; transition:.2s; min-height:200px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; cursor:pointer; max-width:520px; margin:0 auto; }
+.drop.drag{ border-color:var(--gold); background:#FFFBF5; }
+.drop-illust{ font-size:46px; }
+.drop h3{ font-family:var(--serif); font-size:1.1rem; font-weight:600; }
+.drop .hint{ font-size:.78rem; color:var(--ink-soft); }
+.drop-cta{ display:inline-block; margin-top:6px; font-size:.85rem; color:#fff; background:var(--gold); border-radius:100px; padding:.5em 1.5em; }
+.drop input[type=file]{ display:none; }
+.face-loader{ text-align:center; padding:24px 0; }
+.spinner{ width:40px; height:40px; margin:0 auto 12px; border-radius:50%; border:3px solid var(--line); border-top-color:var(--gold); animation:spin 1s linear infinite; }
+@keyframes spin{ to{ transform:rotate(360deg); } }
+.face-loader p{ color:var(--ink-soft); font-size:.86rem; }
+.face-read{ max-width:520px; margin:14px auto 0; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; }
+.face-read.ok{ border-color:#B7D0BA; background:#F5FAF5; }
+.face-read.warn{ border-color:var(--warn); background:#FDF6EC; }
+.face-read-grid{ display:flex; gap:16px; align-items:center; }
+.face-read-img{ width:88px; height:88px; object-fit:cover; border-radius:12px; flex:none; }
+.face-read-kicker{ font-size:.74rem; letter-spacing:.1em; color:var(--good); font-weight:700; }
+.face-read-body p{ font-size:.86rem; color:var(--ink); margin-top:.4em; line-height:1.6; }
+.face-read-contour{ color:var(--ink-soft) !important; }
+.face-read-sub{ font-size:.76rem; color:var(--ink-soft); margin-top:12px; text-align:center; }
