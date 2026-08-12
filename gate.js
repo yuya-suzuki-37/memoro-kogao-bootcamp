@@ -1,16 +1,22 @@
 /* ============================================================
-   Memoro 共通ゲート — 各ブートキャンプの先頭で読み込む"鍵穴"
+   Memoro 共通ゲート v2 — 各ブートキャンプの先頭で読み込む"鍵穴"
+   メール ＋ 共通パスワード方式（名簿にいる人だけ通す）
+
    使い方（各 index.html の <body> 先頭あたり）:
      <script>window.MEMORO_AUTH={
        api:'https://memoro-auth.<あなた>.workers.dev',  // 認証WorkerのURL
-       product:'kogao',                                  // この講座のID
+       product:'kogao',                                  // この講座のID（kogao/posture/fatburn/yoga/pilates）
        title:'30日間 小顔ケア ブートキャンプ'            // ログイン画面の見出し
      }</script>
      <script src="gate.js"></script>
 
    ・認証OKになるまでページ本体を隠し、ログイン画面をかぶせる
-   ・トークンは端末内(localStorage)に保存。有効期限内は次回自動ログイン
+   ・ログインは「メール＋共通パスワード」。名簿から消された人・期限切れの人は入れない
+   ・トークンは端末内(localStorage)に保存。開くたびにサーバーへ再照合するので
+     「名簿から削除 → 次に開いた瞬間ロック」が効く
    ・api 未設定なら「開発モード」で素通り（ローカル制作中に邪魔しない）
+   ・api:'demo' は Worker不要のデモ。admin.html と同じブラウザなら名簿が連動
+     （デモの共通パスワードは "demo"）
    ============================================================ */
 (function () {
   const cfg = window.MEMORO_AUTH || {};
@@ -18,10 +24,25 @@
   const PRODUCT = cfg.product || '';
   const TITLE = cfg.title || 'Memoro ブートキャンプ';
   const LS = 'memoro_auth_token';
-  const DEMO = API === 'demo';   // ローカル確認用: パスワード "demo" で解錠（Worker不要）
+  const DEMO = API === 'demo';
+  const DEMO_LS = 'memoro_demo_roster';   // admin.html と共有する疑似名簿
 
   // 開発モード: api 未設定なら素通り（ローカル制作の邪魔をしない）
   if (!API) { console.warn('[Memoro gate] MEMORO_AUTH.api 未設定 → 開発モードで素通り'); return; }
+
+  // ---- デモ用の名簿照合（本番は同じ判定をWorkerが行う）----
+  const normEmail = (e) => String(e || '').trim().toLowerCase();
+  function isExpired(exp) { if (!exp) return false; const t = Date.parse(exp + 'T23:59:59+09:00'); return isFinite(t) && Date.now() > t; }
+  function planAllows(plan, product) {
+    if (!product) return true;
+    if (plan === 'all' || plan === '*') return true;
+    return String(plan || '').split(',').map((s) => s.trim()).includes(product);
+  }
+  function demoEntry(email) { try { return JSON.parse(localStorage.getItem(DEMO_LS) || '{}')[normEmail(email)] || null; } catch (e) { return null; } }
+  function demoCheck(email) {   // 名簿にいて・期限内・この講座OKなら true
+    const en = demoEntry(email);
+    return !!(en && !isExpired(en.expires) && planAllows(en.plan, PRODUCT));
+  }
 
   // ---- オーバーレイ（本体を隠すログイン画面）----
   const gate = document.createElement('div');
@@ -43,14 +64,14 @@
       #memoro-gate .mg-title{ font-family:"Shippori Mincho",serif; font-weight:600;
         font-size:1.15rem; margin:22px 0 6px; line-height:1.5; }
       #memoro-gate .mg-lead{ font-size:.8rem; color:#6B645B; line-height:1.7; margin-bottom:22px; }
-      #memoro-gate .mg-field{ position:relative; margin-bottom:14px; }
+      #memoro-gate .mg-field{ margin-bottom:12px; }
       #memoro-gate input{ width:100%; font-family:inherit; font-size:1rem; color:#33302B;
         padding:14px 16px; border:1.5px solid #E7DED2; border-radius:12px; background:#FFFDFA;
-        text-align:center; letter-spacing:.1em; }
+        text-align:center; letter-spacing:.08em; }
       #memoro-gate input:focus{ outline:none; border-color:#B4936A; background:#fff; }
       #memoro-gate .mg-btn{ width:100%; font-family:inherit; font-size:1rem; font-weight:500;
         letter-spacing:.08em; color:#fff; background:#B4936A; border:none; border-radius:100px;
-        padding:15px; cursor:pointer; transition:.2s; box-shadow:0 12px 26px -14px #9A794F; }
+        padding:15px; cursor:pointer; transition:.2s; box-shadow:0 12px 26px -14px #9A794F; margin-top:4px; }
       #memoro-gate .mg-btn:hover{ background:#9A794F; }
       #memoro-gate .mg-btn:disabled{ background:#D8CDBE; box-shadow:none; cursor:wait; }
       #memoro-gate .mg-err{ color:#C0563F; font-size:.82rem; margin-top:12px; min-height:1.2em; }
@@ -64,13 +85,14 @@
       <div class="mg-kicker">MEMORO</div>
       <div class="mg-brand">Memoro</div>
       <div class="mg-title">${TITLE}</div>
-      <p class="mg-lead">受講者ページです。<br>お渡ししたパスワードを入力してください。</p>
-      <form class="mg-field" id="mg-form" autocomplete="off">
-        <input id="mg-pw" type="password" placeholder="パスワード" autocomplete="current-password" enterkeyhint="go">
+      <p class="mg-lead">受講者ページです。<br>ご登録のメールと、お渡ししたパスワードを入力してください。</p>
+      <form id="mg-form" autocomplete="on">
+        <div class="mg-field"><input id="mg-email" type="email" placeholder="メールアドレス" autocomplete="email" enterkeyhint="next"></div>
+        <div class="mg-field"><input id="mg-pw" type="password" placeholder="パスワード" autocomplete="current-password" enterkeyhint="go"></div>
+        <button class="mg-btn" id="mg-go" type="submit">ログイン</button>
       </form>
-      <button class="mg-btn" id="mg-go">ログイン</button>
       <div class="mg-err" id="mg-err"></div>
-      <p class="mg-note">パスワードは購入者の方にお渡ししています。<br>お手元にない場合はご連絡ください。</p>
+      <p class="mg-note">メール・パスワードは購入者の方にお渡ししています。<br>お手元にない場合はご連絡ください。</p>
     </div>`;
 
   function mount() {
@@ -78,11 +100,11 @@
     (document.body || document.documentElement).appendChild(gate);
   }
   function unlock() { gate.remove(); document.documentElement.style.overflow = ''; }
-
   const $ = (s) => gate.querySelector(s);
 
+  // ---- トークン検証（開くたびに実行。サーバーで名簿を再照合）----
   async function verify(token) {
-    if (DEMO) return token === 'memoro-demo';
+    if (DEMO) { const em = String(token || '').startsWith('demo:') ? token.slice(5) : ''; return em ? demoCheck(em) : false; }
     try {
       const r = await fetch(`${API}/verify`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -93,21 +115,28 @@
   }
 
   function bindForm() {
-    const btn = $('#mg-go'), pw = $('#mg-pw'), err = $('#mg-err'), form = $('#mg-form');
+    const btn = $('#mg-go'), email = $('#mg-email'), pw = $('#mg-pw'), err = $('#mg-err'), form = $('#mg-form');
     async function submit() {
-      const password = pw.value.trim();
+      const em = email.value.trim(), password = pw.value.trim();
+      if (!em) { email.focus(); return; }
       if (!password) { pw.focus(); return; }
       btn.disabled = true; err.textContent = '';
       btn.innerHTML = '<span class="mg-spin"></span>確認中…';
+
       if (DEMO) {
-        if (password === 'demo') { localStorage.setItem(LS, 'memoro-demo'); unlock(); return; }
-        err.textContent = 'パスワードが違います';
+        var cpw = 'demo';
+        try { cpw = JSON.parse(localStorage.getItem('memoro_demo_pw') || '{}')[PRODUCT] || 'demo'; } catch (e) {}
+        if (password === cpw && demoCheck(em)) { localStorage.setItem(LS, 'demo:' + normEmail(em)); unlock(); return; }
+        const en = demoEntry(em);
+        err.textContent = (en && isExpired(en.expires)) ? 'サポート期間が終了しました'
+          : (en && !planAllows(en.plan, PRODUCT)) ? 'この講座の受講権がありません'
+          : 'メールアドレスまたはパスワードが違います';
         btn.disabled = false; btn.textContent = 'ログイン'; pw.focus(); return;
       }
       try {
         const r = await fetch(`${API}/login`, {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password, product: PRODUCT }),
+          body: JSON.stringify({ email: em, password, product: PRODUCT }),
         });
         const j = await r.json();
         if (j.ok && j.token) { localStorage.setItem(LS, j.token); unlock(); return; }
@@ -116,11 +145,10 @@
         err.textContent = '通信エラーです。電波の良い場所で再度お試しください。';
       }
       btn.disabled = false; btn.textContent = 'ログイン';
-      pw.focus();
     }
-    btn.addEventListener('click', submit);
+    btn.addEventListener('click', (e) => { e.preventDefault(); submit(); });
     form.addEventListener('submit', (e) => { e.preventDefault(); submit(); });
-    pw.focus();
+    email.focus();
   }
 
   // ---- 起動: 既存トークンを検証 → OKなら素通り、NGならログイン画面 ----
