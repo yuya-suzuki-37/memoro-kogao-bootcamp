@@ -69,6 +69,13 @@
         padding:14px 16px; border:1.5px solid #E7DED2; border-radius:12px; background:#FFFDFA;
         text-align:center; letter-spacing:.08em; }
       #memoro-gate input:focus{ outline:none; border-color:#B4936A; background:#fff; }
+      #memoro-gate .mg-pw-field{ position:relative; }
+      #memoro-gate .mg-pw-field input{ padding-left:48px; padding-right:48px; }
+      #memoro-gate .mg-eye{ position:absolute; right:8px; top:50%; transform:translateY(-50%);
+        width:36px; height:36px; display:flex; align-items:center; justify-content:center;
+        background:none; border:none; padding:0; cursor:pointer; color:#A99A86; border-radius:9px; transition:.15s; }
+      #memoro-gate .mg-eye:hover{ color:#B4936A; background:#F6F0E8; }
+      #memoro-gate .mg-eye svg{ width:22px; height:22px; display:block; }
       #memoro-gate .mg-btn{ width:100%; font-family:inherit; font-size:1rem; font-weight:500;
         letter-spacing:.08em; color:#fff; background:#B4936A; border:none; border-radius:100px;
         padding:15px; cursor:pointer; transition:.2s; box-shadow:0 12px 26px -14px #9A794F; margin-top:4px; }
@@ -88,7 +95,12 @@
       <p class="mg-lead">受講者ページです。<br>ご登録のメールと、お渡ししたパスワードを入力してください。</p>
       <form id="mg-form" autocomplete="on">
         <div class="mg-field"><input id="mg-email" type="email" placeholder="メールアドレス" autocomplete="email" enterkeyhint="next"></div>
-        <div class="mg-field"><input id="mg-pw" type="password" placeholder="パスワード" autocomplete="current-password" enterkeyhint="go"></div>
+        <div class="mg-field mg-pw-field">
+          <input id="mg-pw" type="password" placeholder="パスワード" autocomplete="current-password" enterkeyhint="go">
+          <button type="button" class="mg-eye" id="mg-eye" tabindex="-1" aria-label="パスワードを表示">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
         <button class="mg-btn" id="mg-go" type="submit">ログイン</button>
       </form>
       <div class="mg-err" id="mg-err"></div>
@@ -148,6 +160,20 @@
     }
     btn.addEventListener('click', (e) => { e.preventDefault(); submit(); });
     form.addEventListener('submit', (e) => { e.preventDefault(); submit(); });
+
+    // パスワードの表示/非表示トグル（目のアイコン）
+    const eye = $('#mg-eye');
+    if (eye) {
+      const EYE_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+      const EYE_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20C5 20 1 12 1 12a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+      eye.addEventListener('click', () => {
+        const show = pw.type === 'password';
+        pw.type = show ? 'text' : 'password';
+        eye.innerHTML = show ? EYE_OFF : EYE_ON;
+        eye.setAttribute('aria-label', show ? 'パスワードを隠す' : 'パスワードを表示');
+        pw.focus();
+      });
+    }
     email.focus();
   }
 

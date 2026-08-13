@@ -1,0 +1,16 @@
+{
+  "name": "Memoro 小顔ケア ブートキャンプ",
+  "short_name": "小顔ケア",
+  "description": "式まで30日、あなただけの小顔ケアを毎日ひとつ。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#EDE4D4",
+  "theme_color": "#FBF7F1",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
