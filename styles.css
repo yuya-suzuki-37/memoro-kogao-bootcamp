@@ -98,7 +98,8 @@ button{ font-family:inherit; cursor:pointer; }
 .result-hero .type-name{ font-family:var(--serif); font-weight:600; font-size:clamp(1.5rem,5.4vw,2.1rem); margin:.5em 0 .1em; color:var(--ink); }
 .result-hero .type-desc{ color:var(--ink-soft); max-width:28em; margin:1em auto 0; font-size:.92rem; }
 .dx-chips{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:1.4em; }
-.dx-chip{ font-family:var(--serif); font-size:1rem; letter-spacing:.06em; color:#fff; background:var(--gold); border-radius:100px; padding:.5em 1.4em; box-shadow:0 8px 18px -12px var(--gold-deep); }
+.dx-chip{ display:inline-flex; align-items:center; gap:.5em; font-family:var(--serif); font-size:1rem; letter-spacing:.05em; color:#fff; background:linear-gradient(135deg,#CBAC70,#A9853E); border-radius:100px; padding:.48em 1.3em .48em 1.02em; box-shadow:0 12px 24px -13px var(--gold-deep), inset 0 1px 0 rgba(255,255,255,.42); }
+.dx-chip::before{ content:"✓"; display:flex; align-items:center; justify-content:center; width:1.25em; height:1.25em; border-radius:50%; background:rgba(255,255,255,.94); color:#A9853E; font-size:.64em; font-weight:800; flex:none; box-shadow:0 1px 3px rgba(120,90,45,.28); }
 
 /* ---------- life plan ---------- */
 .life-list{ display:grid; gap:12px; }

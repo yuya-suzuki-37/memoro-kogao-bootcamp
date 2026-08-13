@@ -33,7 +33,25 @@ const PHASE_INFO = {
   4:{ en:'FINISH', name:'仕上げ期',   days:'DAY 22–30', desc:'式・前撮り当日に向けて、ベストな状態へ整える最後の期間。' },
 };
 
-const HABIT_LABEL = { sleep:'🛏 仰向け寝', salt:'🧂 塩分ひかえめ', cool:'❄️ 朝の温冷', nose:'👃 鼻呼吸' };
+// アプリ級UI用のSVGアイコン（絵文字を置き換え・currentColorで色継承）
+const ICONS = {
+  sun:'<svg class="p30-i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 3v1.6M12 19.4V21M5.6 5.6l1.1 1.1M17.3 17.3l1.1 1.1M3 12h1.6M19.4 12H21M5.6 18.4l1.1-1.1M17.3 6.7l1.1-1.1"/></svg>',
+  moon:'<svg class="p30-i" viewBox="0 0 24 24"><path d="M18 14.3A7 7 0 0 1 9.7 6 5.5 5.5 0 1 0 18 14.3z"/></svg>',
+  drop:'<svg class="p30-i" viewBox="0 0 24 24"><path d="M12 3.5s5.5 6 5.5 9.5a5.5 5.5 0 1 1-11 0C6.5 9.5 12 3.5 12 3.5z"/></svg>',
+  clock:'<svg class="p30-i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8.5V12l2.5 1.5"/></svg>',
+  flask:'<svg class="p30-i" viewBox="0 0 24 24"><path d="M9.5 3h5M10.5 3v5.5L6 16.5a1.4 1.4 0 0 0 1.2 2.1h9.6a1.4 1.4 0 0 0 1.2-2.1L13.5 8.5V3"/></svg>',
+  alert:'<svg class="p30-i" viewBox="0 0 24 24"><path d="M12 4.5l8.5 15H3.5L12 4.5z"/><path d="M12 10v4.2M12 17.2v.4"/></svg>',
+  bed:'<svg class="p30-i" viewBox="0 0 24 24"><path d="M3 7v11M3 13h18v5M21 13v5M6 10h5a2 2 0 0 1 2 2H3a3 3 0 0 1 3-2z"/></svg>',
+  salt:'<svg class="p30-i" viewBox="0 0 24 24"><path d="M9 8V5.5a3 3 0 0 1 6 0V8M7.6 8h8.8l-.7 11.4a1 1 0 0 1-1 .95H9.3a1 1 0 0 1-1-.95zM11 12v4M13 12v4"/></svg>',
+  snow:'<svg class="p30-i" viewBox="0 0 24 24"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9M12 6.4l-2.4 2M12 6.4l2.4 2M12 17.6l-2.4-2M12 17.6l2.4-2"/></svg>',
+  nose:'<svg class="p30-i" viewBox="0 0 24 24"><path d="M13 4v7.6a3.4 3.4 0 0 1-1.2 2.6M13 13a3 3 0 0 0 .5 4.4M9.6 15a3 3 0 0 0 4 2.5"/></svg>',
+  check:'<svg class="p30-i" viewBox="0 0 24 24"><path d="M4.5 12.5l4.5 4.5L19.5 7"/></svg>',
+  ring:'<svg class="p30-i" viewBox="0 0 24 24"><circle cx="12" cy="14.5" r="5.5"/><path d="M8.6 9.6l1.4-4h4l1.4 4"/><path d="M12 3.2l1.2 1.6L12 6.4l-1.2-1.6z"/></svg>',
+  camera:'<svg class="p30-i" viewBox="0 0 24 24"><path d="M4 8h3.2l1.6-2h6.4l1.6 2H20v11H4z"/><circle cx="12" cy="13" r="3.3"/></svg>',
+  sparkle:'<svg class="p30-i" viewBox="0 0 24 24"><path d="M12 3l1.7 5.1a3 3 0 0 0 2.2 2.2L21 12l-5.1 1.7a3 3 0 0 0-2.2 2.2L12 21l-1.7-5.1a3 3 0 0 0-2.2-2.2L3 12l5.1-1.7a3 3 0 0 0 2.2-2.2z"/></svg>',
+};
+
+const HABIT_LABEL = { sleep:ICONS.bed+' 仰向け寝', salt:ICONS.salt+' 塩分ひかえめ', cool:ICONS.snow+' 朝の温冷', nose:ICONS.nose+' 鼻呼吸' };
 
 const catLabel = ex => (KOGAO_CATEGORY[ex.category] && KOGAO_CATEGORY[ex.category].name) || 'ケア';
 const slotClass = ex => ex.slot === '朝' ? 'morning' : 'night';
@@ -119,7 +137,7 @@ export function render30DayKogao(dx, mountEl){
     if (days != null && days >= 0){
       cdEl.innerHTML = `
         <div class="cd-box">
-          <span class="cd-label">💍 式・前撮りまで</span>
+          <span class="cd-label">${ICONS.ring} 式・前撮りまで</span>
           <div class="cd-big">あと <b>${days}</b> 日</div>
           <button class="cd-edit" id="cd-edit">日付を変更</button>
         </div>`;
@@ -127,7 +145,7 @@ export function render30DayKogao(dx, mountEl){
     } else {
       cdEl.innerHTML = `
         <div class="cd-box cd-set">
-          <span class="cd-label">💍 式・前撮りの日を入れると、毎日カウントダウン</span>
+          <span class="cd-label">${ICONS.ring} 式・前撮りの日を入れると、毎日カウントダウン</span>
           <div class="cd-input-row"><input type="date" id="cd-input"><button class="cd-save" id="cd-save">設定</button></div>
         </div>`;
       cdEl.querySelector('#cd-save').addEventListener('click', () => {
@@ -161,9 +179,9 @@ export function render30DayKogao(dx, mountEl){
     };
     baEl.innerHTML = `
       <div class="p30-ba-box">
-        <div class="p30-ba-head"><span>📸 Before / After</span><span class="p30-ba-note">正面のお顔で30日の変化を残そう（端末内だけ）</span></div>
+        <div class="p30-ba-head"><span>${ICONS.camera} Before / After</span><span class="p30-ba-note">正面のお顔で30日の変化を残そう（端末内だけ）</span></div>
         <div class="p30-ba-grid">${slot('before','Before（今）')}${slot('after','After（30日後）')}</div>
-        ${before && after ? '<p class="p30-ba-done">✨ 2枚そろいました。並べて見比べてみましょう。</p>' : ''}
+        ${before && after ? `<p class="p30-ba-done">${ICONS.sparkle} 2枚そろいました。並べて見比べてみましょう。</p>` : ''}
       </div>`;
     baEl.querySelectorAll('input[data-ba]').forEach(inp => inp.addEventListener('change', e => {
       const f = e.target.files && e.target.files[0]; if (!f) return;
@@ -179,7 +197,7 @@ export function render30DayKogao(dx, mountEl){
     const dk = todayKey(), perfect = getHabitPerfectDays();
     habitsEl.innerHTML = `
       <div class="p30-habits-box">
-        <div class="p30-habits-head"><span>✅ 今日の生活習慣</span><span class="p30-habits-count">${perfect}日 コンプリート</span></div>
+        <div class="p30-habits-head"><span class="p30-habits-title">${ICONS.check} 今日の生活習慣</span><span class="p30-habits-count">${perfect}日 コンプリート</span></div>
         <div class="p30-habits-grid">
           ${HABIT_KEYS.map(k => `<button class="habit-btn ${isHabitDone(dk,k)?'on':''}" data-habit="${k}">${HABIT_LABEL[k]}</button>`).join('')}
         </div>
@@ -199,7 +217,7 @@ export function render30DayKogao(dx, mountEl){
         ${isDayDone(d.day) ? '<span class="p30-day-check">✓</span>' : ''}
         <span class="p30-day-badge">DAY</span>
         <span class="p30-day-num">${d.day}</span>
-        <span class="p30-day-theme">☀${d.morning.length}・🌙${d.night.length}</span>
+        <span class="p30-day-theme">${ICONS.sun}${d.morning.length}<i>・</i>${ICONS.moon}${d.night.length}</span>
         <span class="p30-day-items">${names}</span>
         <span class="p30-day-time">${estimateMinutes(d)}</span>
       </button>`;
@@ -217,12 +235,12 @@ export function render30DayKogao(dx, mountEl){
         <div class="p30-ex-body">
           <span class="p30-ex-cat">${catLabel(ex)}</span>
           <h4>${ex.name}</h4>
-          <div class="p30-ex-meta"><span>⏱ ${ex.duration || ''}</span></div>
+          <div class="p30-ex-meta"><span class="p30-ex-time">${ICONS.clock}${ex.duration || ''}</span></div>
           <p class="p30-ex-purpose">${ex.purpose || ''}</p>
           ${(ex.how && ex.how.length) ? `<ol class="p30-ex-how">${ex.how.map(s => `<li>${s}</li>`).join('')}</ol>` : ''}
-          ${ex.cues ? `<div class="p30-ex-cues"><span class="do">◎ ${ex.cues.do || ''}</span><span class="dont">× ${ex.cues.dont || ''}</span></div>` : ''}
-          ${ex.evidence ? `<p class="p30-ex-evi">🔬 エビデンス <b>${ex.evidence.lv}</b>${ex.evidence.src ? ` ・ ${ex.evidence.src}` : ''}</p>` : ''}
-          ${ex.caution ? `<p class="p30-ex-caution">⚠️ ${ex.caution}</p>` : ''}
+          ${ex.cues ? `<div class="p30-ex-cues"><span class="do">${ex.cues.do || ''}</span><span class="dont">${ex.cues.dont || ''}</span></div>` : ''}
+          ${ex.evidence ? `<p class="p30-ex-evi">${ICONS.flask}<span>エビデンス <b>${ex.evidence.lv}</b>${ex.evidence.src ? ` ・ ${ex.evidence.src}` : ''}</span></p>` : ''}
+          ${ex.caution ? `<p class="p30-ex-caution">${ICONS.alert}<span>${ex.caution}</span></p>` : ''}
         </div>
       </div>`;
   }
@@ -239,9 +257,9 @@ export function render30DayKogao(dx, mountEl){
         </div>
         <button class="p30-detail-close" aria-label="閉じる">×</button>
       </div>
-      <div class="p30-slot"><span class="p30-slot-label morning">☀ 朝のケア（むくみ・巡り）</span><span class="p30-slot-tip">💧 やってすぐ鏡でチェック（むくみは"当日"実感しやすい）</span></div>
+      <div class="p30-slot"><span class="p30-slot-label morning">${ICONS.sun}朝のケア（むくみ・巡り）</span><span class="p30-slot-tip">${ICONS.drop}やってすぐ鏡でチェック（むくみは"当日"実感しやすい）</span></div>
       <div class="p30-ex-list">${d.morning.map(exCard).join('')}</div>
-      <div class="p30-slot"><span class="p30-slot-label night">🌙 夜のケア（表情筋・姿勢・エラ）</span></div>
+      <div class="p30-slot"><span class="p30-slot-label night">${ICONS.moon}夜のケア（表情筋・姿勢・エラ）</span></div>
       <div class="p30-ex-list">${d.night.map(exCard).join('')}</div>
       <button class="p30-done-btn ${done?'done':''}" data-done-day="${day}">
         ${done ? '✓ 完了しました（取り消す）' : 'この日のケアを完了にする'}
