@@ -134,11 +134,42 @@ function choose(i){
   else finishQuiz();
 }
 
-function finishQuiz(){
+async function finishQuiz(){
   const dx = diagnoseKogao(state.answers, state.face);
   saveDx({ ...dx, answers:state.answers });
   addHistory({ problemKeys:dx.problemKeys, primary:dx.primary });
+  await runAnalyzing();
   renderResult(dx);
+}
+
+// 解析中の演出（進捗リング＋項目チェック）— 診断→結果の"間"を作り込む
+function runAnalyzing(){
+  return new Promise(resolve => {
+    const items = ['お顔全体のバランス', 'むくみ・巡り', 'エラ・咬筋の張り', '姿勢のクセ', '表情筋の状態'];
+    const ov = document.createElement('div');
+    ov.className = 'analyzing-ov';
+    ov.innerHTML = `
+      <div class="az-card">
+        <div class="az-ring">
+          <svg viewBox="0 0 80 80"><circle class="az-track" cx="40" cy="40" r="34"/><circle class="az-prog" cx="40" cy="40" r="34"/></svg>
+          <span class="az-pct">0%</span>
+        </div>
+        <p class="az-title">あなたのお顔を解析しています</p>
+        <ul class="az-list">${items.map((t) => `<li><span class="az-check"></span>${t}</li>`).join('')}</ul>
+      </div>`;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('in'));
+    const lis = ov.querySelectorAll('.az-list li');
+    lis.forEach((li, i) => setTimeout(() => li.classList.add('done'), 380 + i * 330));
+    const pctEl = ov.querySelector('.az-pct'), progEl = ov.querySelector('.az-prog');
+    let p = 0;
+    const tick = setInterval(() => {
+      p = Math.min(100, p + 2); pctEl.textContent = p + '%';
+      progEl.style.strokeDashoffset = String(214 * (1 - p / 100));
+      if (p >= 100) clearInterval(tick);
+    }, 34);
+    setTimeout(() => { ov.classList.add('out'); setTimeout(() => { ov.remove(); resolve(); }, 400); }, 2200);
+  });
 }
 
 // ===================================================================
