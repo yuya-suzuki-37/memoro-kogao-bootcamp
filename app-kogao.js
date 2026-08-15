@@ -204,10 +204,16 @@ function renderResult(dx){
   $('#result').innerHTML = `
     <div class="reveal">
       <section class="result-hero">
-        <p class="announce">YOUR KOGAO CARE</p>
-        <h2 class="type-name">あなたの重点ケア</h2>
-        <div class="dx-chips">${chips}</div>
-        <p class="type-desc">${lead}</p>
+        <div class="rh-visual">
+          <img src="images/result-visual.png" alt="" onerror="this.closest('.rh-visual').classList.add('no-img')">
+          <span class="rh-script">your special care</span>
+        </div>
+        <div class="rh-body">
+          <p class="announce">YOUR KOGAO CARE</p>
+          <h2 class="type-name">あなたの重点ケア</h2>
+          <div class="dx-chips">${chips}</div>
+          <p class="type-desc">${lead}</p>
+        </div>
       </section>
       ${faceHTML}
       <div class="life-plan">
